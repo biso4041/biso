@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>관리자 | 연세제이원의원 박프로 실장</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+  :root{
+    --ink:#121110; --ink-soft:#6e6a64; --bg:#f6f4f1; --card:#fff;
+    --gold:#b39159; --gold-soft:#f1eadd; --line:#e5e1da; --danger:#a04545; --ok:#4b7a40;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Pretendard',sans-serif;
+    font-size:15.5px; line-height:1.7; word-break:keep-all; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:880px; margin:0 auto; padding:0 20px 80px;}
+  header{background:var(--ink); color:#fff; padding:18px 0; margin-bottom:26px;}
+  header .wrap{padding-bottom:0; display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  header h1{font-family:'Noto Serif KR',serif; font-size:19px; margin:0;}
+  header h1 small{display:block; font-size:12.5px; color:rgba(255,255,255,.55); font-weight:400; margin-top:2px;}
+  header a{color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,.4); border-radius:999px; padding:7px 16px; font-size:13px; white-space:nowrap;}
+  h2{font-size:18px; margin:0 0 6px; font-family:'Noto Serif KR',serif;}
+  .card{background:var(--card); border:1px solid var(--line); padding:24px 26px; margin-bottom:18px;}
+  .card .desc{font-size:14px; color:var(--ink-soft); margin:0 0 16px;}
+  .btn{display:inline-flex; align-items:center; gap:6px; border:none; border-radius:999px; padding:11px 22px;
+    font-size:14.5px; font-weight:600; font-family:inherit; cursor:pointer; text-decoration:none; transition:transform .15s;}
+  .btn:hover{transform:translateY(-1px);}
+  .btn-gold{background:var(--gold); color:#fff;}
+  .btn-ghost{background:transparent; color:var(--ink); border:1.4px solid var(--ink);}
+  .btn-danger{background:#fff; color:var(--danger); border:1.4px solid #d8b2b2;}
+  .btn-sm{padding:6px 14px; font-size:13px;}
+  input[type=password], input[type=text]{padding:12px 16px; border:1px solid var(--line); font-family:inherit; font-size:15px; width:100%; max-width:340px;}
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  table{width:100%; border-collapse:collapse; font-size:14px;}
+  th, td{padding:11px 8px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top;}
+  th{color:var(--ink-soft); font-weight:600; font-size:12.5px;}
+  .empty{color:var(--ink-soft); font-size:14px; padding:14px 0;}
+  .tag{display:inline-block; font-size:11.5px; color:var(--gold); background:var(--gold-soft); border-radius:20px; padding:2px 10px; font-weight:600;}
+  .tag.ok{color:var(--ok); background:#e6efe2;}
+  .tag.no{color:#999; background:#eee;}
+  .msg{font-size:13.5px; color:var(--gold); margin-top:10px; display:none;}
+  #panel{display:none;}
+  .notice{background:#fdf6e8; border:1px solid #ead9b0; padding:16px 20px; color:#8a7530; font-size:13.5px; margin-bottom:18px;}
+  .scroll{overflow-x:auto;}
+
+  textarea{padding:12px 16px;border:1px solid var(--line);font-family:inherit;font-size:15px;resize:vertical;width:100%;}
+  .sub{font-size:13px;color:var(--ink-soft);}
+  .box{border:1px solid var(--line);background:#fdfcfb;padding:16px 18px;margin-bottom:12px;}
+  .box.off{opacity:.55;}
+  .fields{display:grid;gap:9px;}
+  .fields input[type=text]{max-width:none;}
+  .f2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  @media(max-width:640px){.f2{grid-template-columns:1fr;}}
+  .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:14px;}
+  .thumb{position:relative;border:1px solid var(--line);background:#fff;}
+  .thumb img{width:100%;aspect-ratio:1;object-fit:cover;display:block;}
+  .thumb .del{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.94);border:1px solid #d8b2b2;color:var(--danger);
+    border-radius:99px;width:28px;height:28px;font-size:15px;line-height:1;cursor:pointer;font-weight:700;}
+  .thumb .mv{position:absolute;bottom:6px;background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:99px;
+    width:26px;height:26px;font-size:13px;line-height:1;cursor:pointer;}
+  .thumb .mv.l{left:6px;} .thumb .mv.r{left:38px;}
+  .prev{max-width:260px;border:1px solid var(--line);display:block;margin-top:10px;}
+  .prev[hidden]{display:none;}
+  .switch{display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer;font-size:14px;}
+  .switch input{width:18px;height:18px;}
+  .rvhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+  .tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+  .tab{border:1.4px solid var(--line);background:#fff;border-radius:999px;padding:8px 18px;font-size:14px;font-family:inherit;cursor:pointer;font-weight:600;color:var(--ink-soft);}
+  .tab.active{border-color:var(--ink);color:var(--ink);}
+  .hint{font-size:12.5px;color:var(--ink-soft);margin-top:8px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>관리자 페이지<small>연세제이원의원 · 박프로 실장</small></h1>
+    <a href="index.html">사이트 보기 &rarr;</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 로그인 -->
+  <div class="card" id="loginCard">
+    <h2>&#128274; 로그인</h2>
+    <p class="desc">관리자 비밀번호를 입력해 주세요. (초기 비밀번호: <b>4938</b> &mdash; 로그인 후 꼭 변경해 주세요)</p>
+    <form id="loginForm" class="row">
+      <input type="password" id="pwInput" placeholder="비밀번호" autocomplete="current-password">
+      <button type="submit" class="btn btn-gold" id="loginBtn">로그인</button>
+    </form>
+    <p class="msg" id="loginMsg" style="color:var(--danger);">비밀번호가 올바르지 않습니다.</p>
+  </div>
+
+  <!-- 관리 패널 -->
+  <div id="panel">
+
+    <!-- 예약 안내 -->
+    <div class="card">
+      <h2>&#128222; 예약 접수 안내</h2>
+      <p class="desc">예약은 <b>전화(010-8718-3912)</b>와 <b>메일</b>로만 받습니다. 홈페이지는 고객 정보를 저장하지 않으므로 개인정보 유출 걱정이 없습니다.</p>
+      <p class="desc" style="margin:0;">메일로 온 예약 문의는 <b>평소 쓰시는 메일함</b>에서 확인하시면 됩니다.</p>
+    </div>
+
+    <!-- 이벤트 팝업 -->
+    <div class="card">
+      <h2>&#127881; 이벤트 팝업</h2>
+      <p class="desc">홈페이지에 들어오면 뜨는 이벤트 창입니다. 진행 중이 아닐 때는 <b>사용 안 함</b>으로 꺼두세요.</p>
+      <div class="row" style="margin-bottom:16px;">
+        <label style="display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer;">
+          <input type="checkbox" id="evtOn" style="width:18px;height:18px;"> 이벤트 팝업 사용
+        </label>
+      </div>
+      <div style="display:grid;gap:10px;max-width:520px;">
+        <input type="text" id="evtTitleIn" placeholder="제목 (예: 재생·탄력·색소 피부 시술 패키지)" style="max-width:none;">
+        <textarea id="evtTextIn" placeholder="내용 (예: 8월 한 달 특별가로 진행합니다. 자세한 내용은 전화로 문의해주세요.)"
+          style="min-height:96px;padding:12px 16px;border:1px solid var(--line);font-family:inherit;font-size:15px;resize:vertical;"></textarea>
+        <div class="row">
+          <button class="btn btn-ghost btn-sm" id="evtImgBtn">&#128247; 이벤트 사진 넣기</button>
+          <button class="btn btn-ghost btn-sm" id="evtImgDel">사진 빼기</button>
+          <input type="file" id="evtImgFile" accept="image/*" style="display:none;">
+          <span id="evtImgName" style="font-size:13px;color:var(--ink-soft);"></span>
+        </div>
+      </div>
+      <div class="row" style="margin-top:16px;">
+        <button class="btn btn-gold" id="evtSave">저장</button>
+        <a class="btn btn-ghost" href="index.html?evt=1" target="_blank">팝업 미리보기</a>
+      </div>
+      <p class="msg" id="evtMsg">저장되었습니다.</p>
+    </div>
+
+
+    <!-- 메인(히어로) 화면 -->
+    <div class="card">
+      <h2>&#127912; 메인 화면 사진 &middot; 영상</h2>
+      <p class="desc">홈페이지 맨 위 첫 화면입니다. <b>사진이 먼저 보이고 잠시 뒤 영상으로 바뀝니다.</b> 사진만 쓰시려면 아래 '영상 사용 안 함'을 체크해 주세요.</p>
+
+      <div class="box">
+        <b>메인 사진 (커버)</b>
+        <p class="sub" style="margin:4px 0 10px;">가로로 긴 사진이 잘 어울립니다. (권장 1920&times;1080 이상)</p>
+        <div class="row">
+          <button class="btn btn-ghost btn-sm" id="heroImgBtn">&#128247; 사진 올리기</button>
+          <button class="btn btn-danger btn-sm" id="heroImgDel">처음 사진으로</button>
+          <input type="file" id="heroImgFile" accept="image/*" style="display:none;">
+        </div>
+        <img class="prev" id="heroImgPrev" alt="" hidden>
+      </div>
+
+      <div class="box">
+        <b>메인 배경 영상</b>
+        <p class="sub" style="margin:4px 0 10px;">소리 없이 반복 재생됩니다. <b>20MB 이하, 10&sim;20초 내외</b>의 짧은 영상을 권장합니다.</p>
+        <label class="switch" style="margin-bottom:10px;">
+          <input type="checkbox" id="heroVidOff"> 영상 사용 안 함 (사진만 보이기)
+        </label>
+        <div class="row">
+          <button class="btn btn-ghost btn-sm" id="heroVidBtn">&#127909; 영상 올리기</button>
+          <button class="btn btn-danger btn-sm" id="heroVidDel">처음 영상으로</button>
+          <input type="file" id="heroVidFile" accept="video/*" style="display:none;">
+        </div>
+        <video class="prev" id="heroVidPrev" muted loop playsinline controls hidden></video>
+      </div>
+
+      <div class="row" style="margin-top:6px;">
+        <button class="btn btn-gold" id="heroSave">저장</button>
+        <a class="btn btn-ghost" href="index.html" target="_blank">메인 화면 확인</a>
+      </div>
+      <p class="msg" id="heroMsg">저장되었습니다.</p>
+    </div>
+
+    <!-- 후기 관리 -->
+    <div class="card">
+      <h2>&#11088; 후기 관리</h2>
+      <p class="desc">후기를 등록하고, <b>게시</b>에 체크한 후기만 홈페이지에 보입니다. 체크를 풀면 지우지 않고 숨길 수 있어요.</p>
+
+      <div class="box" style="background:#fff;">
+        <b>새 후기 등록</b>
+        <div class="fields" style="margin-top:10px;">
+          <div class="f2">
+            <input type="text" id="nrTag" placeholder="시술명 (예: 눈썹 반영구)">
+            <input type="text" id="nrWho" placeholder="작성자 (예: 네이버 방문자 리뷰 · 홍길동 님)">
+          </div>
+          <textarea id="nrText" placeholder="후기 내용을 입력해 주세요." style="min-height:110px;"></textarea>
+          <div class="row">
+            <button class="btn btn-ghost btn-sm" id="nrImgBtn">&#128247; 후기 사진 (선택)</button>
+            <button class="btn btn-ghost btn-sm" id="nrImgDel">사진 빼기</button>
+            <input type="file" id="nrImgFile" accept="image/*" style="display:none;">
+            <span class="sub" id="nrImgName">사진 없음</span>
+          </div>
+          <div class="row">
+            <label class="switch"><input type="checkbox" id="nrOn" checked> 바로 게시하기</label>
+            <button class="btn btn-gold btn-sm" id="nrAdd">후기 추가</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="rvList"></div>
+      <p class="msg" id="rvMsg">저장되었습니다.</p>
+    </div>
+
+    <!-- 사진 관리 -->
+    <div class="card">
+      <h2>&#128444;&#65039; 사진 올리기 &middot; 삭제</h2>
+      <p class="desc">홈페이지에 보이는 사진을 올리고 지울 수 있습니다. 사진 위 <b>&times;</b> 를 누르면 삭제, <b>&lsaquo; &rsaquo;</b> 로 순서를 바꿉니다.</p>
+      <div class="tabs">
+        <button class="tab active" data-ph="gallery">공간 &middot; 활동 갤러리</button>
+        <button class="tab" data-ph="volunteer">봉사활동 사진</button>
+      </div>
+      <div class="row">
+        <button class="btn btn-gold btn-sm" id="phAdd">&#128247; 사진 올리기 (여러 장 가능)</button>
+        <input type="file" id="phFile" accept="image/*" multiple style="display:none;">
+        <span class="sub" id="phCount"></span>
+      </div>
+      <p class="hint">사진은 자동으로 크기가 줄어들어 저장되니 원본 그대로 올리셔도 됩니다.</p>
+      <div class="thumbs" id="phThumbs"></div>
+      <p class="msg" id="phMsg">저장되었습니다.</p>
+    </div>
+
+    <!-- 편집 모드 -->
+    <div class="card">
+      <h2>&#9999;&#65039; 사이트 내용&middot;사진 수정</h2>
+      <p class="desc">편집 모드를 열면 사이트 화면에서 <b>글자를 직접 클릭해서 고치고</b>, 사진 위의 &#128247; 버튼으로 <b>사진을 교체</b>할 수 있어요. 수정 후 하단의 '저장'을 꼭 눌러주세요.</p>
+      <div class="row"><button class="btn btn-gold" id="editBtn">메인 페이지 편집 &rarr;</button></div>
+    </div>
+
+    <div class="notice">
+      &#128161; 편집한 글&middot;사진은 <b>지금 사용 중인 이 브라우저</b>에 저장됩니다.
+      다른 기기에도 같은 내용을 보이게 하려면 아래 <b>백업 내보내기</b> 파일을 만들어 그 기기에서 <b>복원</b>해 주세요.
+      메인사진&middot;후기&middot;갤러리 사진도 함께 백업됩니다.
+    </div>
+
+    <!-- 백업 -->
+    <div class="card">
+      <h2>&#128190; 백업 &middot; 복원</h2>
+      <p class="desc">수정한 글과 사진을 파일 하나로 저장해 두거나, 다른 기기로 옮길 때 사용하세요.</p>
+      <div class="row">
+        <button class="btn btn-ghost" id="exportBtn">백업 내보내기</button>
+        <button class="btn btn-ghost" id="importBtn">백업 복원</button>
+        <input type="file" id="importFile" accept=".json" style="display:none;">
+      </div>
+      <p class="msg" id="backupMsg"></p>
+    </div>
+
+    <!-- 비밀번호 -->
+    <div class="card">
+      <h2>&#128273; 비밀번호 변경</h2>
+      <form id="pwForm" class="row">
+        <input type="password" id="newPw" placeholder="새 비밀번호" autocomplete="new-password">
+        <button type="submit" class="btn btn-ghost">변경</button>
+      </form>
+      <p class="msg" id="pwMsg">비밀번호가 변경되었습니다.</p>
+    </div>
+
+    <!-- 초기화 -->
+    <div class="card">
+      <h2>&#9888;&#65039; 전체 초기화</h2>
+      <p class="desc">편집 모드에서 수정한 모든 글&middot;사진을 처음 상태로 되돌립니다.</p>
+      <div class="row">
+        <button class="btn btn-danger" id="resetCms">글&middot;사진 수정 초기화</button>
+        <button class="btn btn-danger" id="logoutBtn">로그아웃</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="pb-store.js"></script>
+<script>
+(function(){
+  var SESSION_HOURS = 2;
+  function getPw(){ return localStorage.getItem('pb_pw') || '4938'; }
+  function loggedIn(){ return Date.now() < Number(localStorage.getItem('pb_admin_until') || 0); }
+  function extendSession(){ localStorage.setItem('pb_admin_until', String(Date.now() + SESSION_HOURS * 3600 * 1000)); }
+
+  var loginCard = document.getElementById('loginCard');
+  var panel = document.getElementById('panel');
+
+  function showPanel(){
+    loginCard.style.display = loggedIn() ? 'none' : 'block';
+    panel.style.display = loggedIn() ? 'block' : 'none';
+    if (loggedIn()) { loadEvt(); loadHero(); renderReviews(); renderPhotos(); }
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    if (document.getElementById('pwInput').value === getPw()) { extendSession(); showPanel(); }
+    else { document.getElementById('loginMsg').style.display = 'block'; }
+  });
+
+  document.getElementById('editBtn').addEventListener('click', function(){
+    extendSession();
+    location.href = 'index.html?edit=1';
+  });
+
+  // ---- 이벤트 팝업 ----
+  var evtImgData = '';
+  function loadEvt(){
+    var c = {};
+    try { c = JSON.parse(localStorage.getItem('pb_event') || '{}'); } catch(e){}
+    document.getElementById('evtOn').checked = (c.on === true);
+    document.getElementById('evtTitleIn').value = c.title || '';
+    document.getElementById('evtTextIn').value = c.text || '';
+    evtImgData = c.img || '';
+    document.getElementById('evtImgName').textContent = evtImgData ? '사진 있음' : '사진 없음';
+  }
+  document.getElementById('evtImgBtn').addEventListener('click', function(){ document.getElementById('evtImgFile').click(); });
+  document.getElementById('evtImgFile').addEventListener('change', function(){
+    var f = this.files[0]; if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function(){ evtImgData = rd.result; document.getElementById('evtImgName').textContent = '사진 선택됨 (저장을 눌러주세요)'; };
+    rd.readAsDataURL(f);
+  });
+  document.getElementById('evtImgDel').addEventListener('click', function(){
+    evtImgData = ''; document.getElementById('evtImgName').textContent = '사진 없음';
+  });
+  document.getElementById('evtSave').addEventListener('click', function(){
+    localStorage.setItem('pb_event', JSON.stringify({
+      on: document.getElementById('evtOn').checked,
+      title: document.getElementById('evtTitleIn').value.trim(),
+      text: document.getElementById('evtTextIn').value.trim(),
+      img: evtImgData
+    }));
+    // 오늘 하루 숨김 해제 (수정한 내용을 바로 확인할 수 있게)
+    Object.keys(localStorage).forEach(function(k){ if (k.indexOf('pb_evt_hide_') === 0) localStorage.removeItem(k); });
+    document.getElementById('evtMsg').style.display = 'block';
+  });
+
+
+  // =========================================================
+  //  메인 화면 사진 · 영상
+  // =========================================================
+  var heroPending = { img: null, video: null };
+
+  function loadHero(){
+    var h = PB.getHero();
+    document.getElementById('heroVidOff').checked = !!h.videoOff;
+    var ip = document.getElementById('heroImgPrev');
+    if (h.img) PB.mediaURL(h.img).then(function(u){ if(u){ ip.src = u; ip.hidden = false; } });
+    else { ip.hidden = true; ip.removeAttribute('src'); }
+    var vp = document.getElementById('heroVidPrev');
+    if (h.video) PB.mediaURL(h.video).then(function(u){ if(u){ vp.src = u; vp.hidden = false; } });
+    else { vp.hidden = true; vp.removeAttribute('src'); }
+  }
+
+  document.getElementById('heroImgBtn').addEventListener('click', function(){ document.getElementById('heroImgFile').click(); });
+  document.getElementById('heroImgFile').addEventListener('change', function(){
+    var f = this.files[0]; if (!f) return;
+    heroPending.img = f;
+    var ip = document.getElementById('heroImgPrev');
+    ip.src = URL.createObjectURL(f); ip.hidden = false;
+    flash('heroMsg', '사진을 선택했습니다. 아래 저장을 눌러주세요.');
+    this.value = '';
+  });
+  document.getElementById('heroImgDel').addEventListener('click', function(){
+    if (!confirm('메인 사진을 처음 사진으로 되돌릴까요?')) return;
+    var h = PB.getHero();
+    if (h.img) { PB.delMedia(h.img); PB.clearURL(h.img); }
+    h.img = ''; PB.write(PB.K.hero, h); heroPending.img = null;
+    loadHero(); flash('heroMsg', '처음 사진으로 되돌렸습니다.');
+  });
+
+  document.getElementById('heroVidBtn').addEventListener('click', function(){ document.getElementById('heroVidFile').click(); });
+  document.getElementById('heroVidFile').addEventListener('change', function(){
+    var f = this.files[0]; if (!f) return;
+    if (f.size > 20 * 1024 * 1024 && !confirm('영상이 ' + Math.round(f.size/1024/1024) + 'MB로 큽니다. 홈페이지가 느려질 수 있어요. 그래도 사용할까요?')) { this.value=''; return; }
+    heroPending.video = f;
+    var vp = document.getElementById('heroVidPrev');
+    vp.src = URL.createObjectURL(f); vp.hidden = false;
+    flash('heroMsg', '영상을 선택했습니다. 아래 저장을 눌러주세요.');
+    this.value = '';
+  });
+  document.getElementById('heroVidDel').addEventListener('click', function(){
+    if (!confirm('메인 영상을 처음 영상으로 되돌릴까요?')) return;
+    var h = PB.getHero();
+    if (h.video) { PB.delMedia(h.video); PB.clearURL(h.video); }
+    h.video = ''; PB.write(PB.K.hero, h); heroPending.video = null;
+    loadHero(); flash('heroMsg', '처음 영상으로 되돌렸습니다.');
+  });
+
+  document.getElementById('heroSave').addEventListener('click', function(){
+    var h = PB.getHero();
+    h.videoOff = document.getElementById('heroVidOff').checked;
+    var jobs = [];
+    if (heroPending.img)   jobs.push(PB.saveFile(heroPending.img,   h.img   || PB.uid()).then(function(id){ h.img = id; }));
+    if (heroPending.video) jobs.push(PB.saveFile(heroPending.video, h.video || PB.uid()).then(function(id){ h.video = id; }));
+    Promise.all(jobs).then(function(){
+      PB.write(PB.K.hero, h);
+      heroPending = { img: null, video: null };
+      flash('heroMsg', '저장되었습니다. 메인 화면에서 확인해 보세요.');
+    }).catch(function(){ alert('저장 중 문제가 생겼습니다. 파일 크기를 줄여서 다시 시도해 주세요.'); });
+  });
+
+  // =========================================================
+  //  후기 관리
+  // =========================================================
+  var nrPhoto = null;
+
+  function esc(t){ var d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
+
+  function getReviews(){ return PB.ensureReviews(); }
+  function setReviews(a){ PB.write(PB.K.reviews, a); }
+
+  function renderReviews(){
+    var list = getReviews();
+    var box = document.getElementById('rvList');
+    if (!list.length) { box.innerHTML = '<p class="empty">등록된 후기가 없습니다. 위에서 후기를 추가해 주세요.</p>'; return; }
+    box.innerHTML = '<p class="sub" style="margin:18px 0 10px;"><b>등록된 후기 ' + list.length + '건</b> · 체크된 후기만 홈페이지에 보입니다.</p>';
+    list.forEach(function(r, i){
+      var d = document.createElement('div');
+      d.className = 'box' + (r.on === false ? ' off' : '');
+      d.innerHTML =
+        '<div class="rvhead">' +
+          '<label class="switch"><input type="checkbox" data-on="' + i + '"' + (r.on === false ? '' : ' checked') + '> 게시하기</label>' +
+          '<span>' +
+            '<button class="btn btn-ghost btn-sm" data-up="' + i + '">&#8593; 위로</button> ' +
+            '<button class="btn btn-ghost btn-sm" data-down="' + i + '">&#8595; 아래로</button> ' +
+            '<button class="btn btn-danger btn-sm" data-del="' + i + '">삭제</button>' +
+          '</span>' +
+        '</div>' +
+        '<div class="fields">' +
+          '<div class="f2">' +
+            '<input type="text" data-tag="' + i + '" value="' + esc(r.tag) + '" placeholder="시술명">' +
+            '<input type="text" data-who="' + i + '" value="' + esc(r.who) + '" placeholder="작성자">' +
+          '</div>' +
+          '<textarea data-text="' + i + '" style="min-height:96px;">' + esc(r.text) + '</textarea>' +
+          '<div class="row">' +
+            '<button class="btn btn-ghost btn-sm" data-photo="' + i + '">&#128247; 사진 ' + (r.photo ? '바꾸기' : '넣기') + '</button>' +
+            (r.photo ? '<button class="btn btn-ghost btn-sm" data-photodel="' + i + '">사진 빼기</button>' : '') +
+          '</div>' +
+          (r.photo ? '<img class="prev" data-pv="' + esc(r.photo) + '" alt="">' : '') +
+        '</div>';
+      box.appendChild(d);
+      var pv = d.querySelector('img[data-pv]');
+      if (pv) PB.mediaURL(r.photo).then(function(u){ if (u) pv.src = u; else pv.remove(); });
+    });
+  }
+
+  function saveFields(){
+    var list = getReviews();
+    document.querySelectorAll('[data-tag]').forEach(function(el){ list[+el.dataset.tag].tag = el.value.trim(); });
+    document.querySelectorAll('[data-who]').forEach(function(el){ list[+el.dataset.who].who = el.value.trim(); });
+    document.querySelectorAll('[data-text]').forEach(function(el){ list[+el.dataset.text].text = el.value.trim(); });
+    setReviews(list);
+    return list;
+  }
+
+  document.getElementById('rvList').addEventListener('change', function(e){
+    var t = e.target;
+    if (t.dataset.on !== undefined) {
+      var list = saveFields();
+      list[+t.dataset.on].on = t.checked;
+      setReviews(list); renderReviews(); flash('rvMsg', t.checked ? '홈페이지에 게시됩니다.' : '홈페이지에서 숨겼습니다.');
+    }
+  });
+
+  document.getElementById('rvList').addEventListener('input', function(){
+    clearTimeout(window.__rvT);
+    window.__rvT = setTimeout(function(){ saveFields(); flash('rvMsg', '자동 저장되었습니다.'); }, 700);
+  });
+
+  document.getElementById('rvList').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    var list = saveFields(), i;
+    if (b.dataset.del !== undefined) {
+      i = +b.dataset.del;
+      if (!confirm('이 후기를 삭제할까요? 되돌릴 수 없습니다.')) return;
+      if (list[i].photo) { PB.delMedia(list[i].photo); PB.clearURL(list[i].photo); }
+      list.splice(i, 1); setReviews(list); renderReviews(); flash('rvMsg', '삭제되었습니다.');
+    } else if (b.dataset.up !== undefined) {
+      i = +b.dataset.up; if (i === 0) return;
+      list.splice(i - 1, 0, list.splice(i, 1)[0]); setReviews(list); renderReviews();
+    } else if (b.dataset.down !== undefined) {
+      i = +b.dataset.down; if (i >= list.length - 1) return;
+      list.splice(i + 1, 0, list.splice(i, 1)[0]); setReviews(list); renderReviews();
+    } else if (b.dataset.photo !== undefined) {
+      i = +b.dataset.photo;
+      pickFile('image/*', false, function(files){
+        var id = list[i].photo || PB.uid();
+        PB.saveFile(files[0], id).then(function(){ list[i].photo = id; setReviews(list); renderReviews(); flash('rvMsg', '사진이 등록되었습니다.'); });
+      });
+    } else if (b.dataset.photodel !== undefined) {
+      i = +b.dataset.photodel;
+      PB.delMedia(list[i].photo); PB.clearURL(list[i].photo);
+      list[i].photo = ''; setReviews(list); renderReviews(); flash('rvMsg', '사진을 뺐습니다.');
+    }
+  });
+
+  // 새 후기 등록
+  document.getElementById('nrImgBtn').addEventListener('click', function(){ document.getElementById('nrImgFile').click(); });
+  document.getElementById('nrImgFile').addEventListener('change', function(){
+    var f = this.files[0]; if (!f) return;
+    nrPhoto = f; document.getElementById('nrImgName').textContent = '사진 선택됨 (' + f.name + ')';
+    this.value = '';
+  });
+  document.getElementById('nrImgDel').addEventListener('click', function(){
+    nrPhoto = null; document.getElementById('nrImgName').textContent = '사진 없음';
+  });
+  document.getElementById('nrAdd').addEventListener('click', function(){
+    var text = document.getElementById('nrText').value.trim();
+    if (!text) { alert('후기 내용을 입력해 주세요.'); return; }
+    var item = {
+      id: PB.uid(), on: document.getElementById('nrOn').checked,
+      tag: document.getElementById('nrTag').value.trim(),
+      who: document.getElementById('nrWho').value.trim(),
+      text: text, photo: ''
+    };
+    var done = function(){
+      var list = saveFields(); list.unshift(item); setReviews(list);
+      document.getElementById('nrTag').value = '';
+      document.getElementById('nrWho').value = '';
+      document.getElementById('nrText').value = '';
+      nrPhoto = null; document.getElementById('nrImgName').textContent = '사진 없음';
+      renderReviews(); flash('rvMsg', '후기가 추가되었습니다.');
+    };
+    if (nrPhoto) { var id = PB.uid(); PB.saveFile(nrPhoto, id).then(function(){ item.photo = id; done(); }); }
+    else done();
+  });
+
+  // =========================================================
+  //  사진 관리 (갤러리 / 봉사활동)
+  // =========================================================
+  var phTab = 'gallery';
+  function phKey(){ return phTab === 'gallery' ? PB.K.gallery : PB.K.volunteer; }
+  function phGet(){ return PB.ensure(phKey(), phTab === 'gallery' ? PB.DEFAULTS.gallery : PB.DEFAULTS.volunteer); }
+  function phSet(a){ PB.write(phKey(), a); }
+
+  document.querySelectorAll('.tab[data-ph]').forEach(function(t){
+    t.addEventListener('click', function(){
+      document.querySelectorAll('.tab[data-ph]').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active'); phTab = t.dataset.ph; renderPhotos();
+    });
+  });
+
+  function renderPhotos(){
+    var list = phGet();
+    var box = document.getElementById('phThumbs');
+    document.getElementById('phCount').textContent = '현재 ' + list.length + '장';
+    box.innerHTML = '';
+    if (!list.length) { box.innerHTML = '<p class="empty">등록된 사진이 없습니다.</p>'; return; }
+    list.forEach(function(it, i){
+      var d = document.createElement('div');
+      d.className = 'thumb';
+      d.innerHTML = '<img alt="">' +
+        '<button class="del" data-del="' + i + '" title="삭제">&times;</button>' +
+        '<button class="mv l" data-up="' + i + '" title="앞으로">&lsaquo;</button>' +
+        '<button class="mv r" data-down="' + i + '" title="뒤로">&rsaquo;</button>';
+      box.appendChild(d);
+      var im = d.querySelector('img');
+      if (it.src) im.src = it.src;
+      else PB.mediaURL(it.media).then(function(u){ if (u) im.src = u; });
+    });
+  }
+
+  document.getElementById('phThumbs').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    var list = phGet(), i;
+    if (b.dataset.del !== undefined) {
+      i = +b.dataset.del;
+      if (!confirm('이 사진을 삭제할까요?')) return;
+      if (list[i].media) { PB.delMedia(list[i].media); PB.clearURL(list[i].media); }
+      list.splice(i, 1); phSet(list); renderPhotos(); flash('phMsg', '사진이 삭제되었습니다.');
+    } else if (b.dataset.up !== undefined) {
+      i = +b.dataset.up; if (i === 0) return;
+      list.splice(i - 1, 0, list.splice(i, 1)[0]); phSet(list); renderPhotos();
+    } else if (b.dataset.down !== undefined) {
+      i = +b.dataset.down; if (i >= list.length - 1) return;
+      list.splice(i + 1, 0, list.splice(i, 1)[0]); phSet(list); renderPhotos();
+    }
+  });
+
+  document.getElementById('phAdd').addEventListener('click', function(){ document.getElementById('phFile').click(); });
+  document.getElementById('phFile').addEventListener('change', function(){
+    var files = [].slice.call(this.files); this.value = '';
+    if (!files.length) return;
+    flash('phMsg', '사진을 저장하는 중입니다...');
+    var list = phGet();
+    files.reduce(function(p, f){
+      return p.then(function(){
+        var id = PB.uid();
+        return PB.saveFile(f, id).then(function(){ list.push({ id: id, media: id }); });
+      });
+    }, Promise.resolve()).then(function(){
+      phSet(list); renderPhotos(); flash('phMsg', files.length + '장이 등록되었습니다.');
+    }).catch(function(){ alert('사진 저장 중 문제가 생겼습니다. 다시 시도해 주세요.'); });
+  });
+
+  // 공용 유틸
+  function pickFile(accept, multi, cb){
+    var inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = accept; inp.multiple = !!multi;
+    inp.onchange = function(){ if (inp.files.length) cb([].slice.call(inp.files)); };
+    inp.click();
+  }
+  function flash(id, text){
+    var m = document.getElementById(id);
+    if (text) m.textContent = text;
+    m.style.display = 'block';
+    clearTimeout(m.__t);
+    m.__t = setTimeout(function(){ m.style.display = 'none'; }, 3000);
+  }
+
+  // ---- 비밀번호 변경 ----
+  document.getElementById('pwForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var v = document.getElementById('newPw').value.trim();
+    if (v.length < 4) { alert('비밀번호는 4자 이상으로 해주세요.'); return; }
+    localStorage.setItem('pb_pw', v);
+    document.getElementById('newPw').value = '';
+    document.getElementById('pwMsg').style.display = 'block';
+  });
+
+  // ---- 백업 ----
+  document.getElementById('exportBtn').addEventListener('click', function(){
+    flash('backupMsg', '백업 파일을 만드는 중입니다... (사진이 많으면 시간이 걸립니다)');
+    PB.exportAll().then(function(data){
+      var blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      var d = new Date();
+      a.download = '사이트백업_' + d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + '.json';
+      a.click();
+      flash('backupMsg', '백업 파일이 저장되었습니다.');
+    });
+  });
+  document.getElementById('importBtn').addEventListener('click', function(){ document.getElementById('importFile').click(); });
+  document.getElementById('importFile').addEventListener('change', function(){
+    var f = this.files[0]; if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function(){
+      try {
+        var data = JSON.parse(rd.result);
+        flash('backupMsg', '복원하는 중입니다...');
+        PB.importAll(data).then(function(){
+          loadEvt(); loadHero(); renderReviews(); renderPhotos();
+          flash('backupMsg', '복원되었습니다!');
+        });
+      } catch(e) { alert('올바른 백업 파일이 아니에요.'); }
+    };
+    rd.readAsText(f);
+  });
+
+  // ---- 초기화 / 로그아웃 ----
+  document.getElementById('resetCms').addEventListener('click', function(){
+    if (confirm('편집 모드에서 수정한 모든 글·사진을 처음 상태로 되돌릴까요?\n(메인사진·후기·갤러리 사진도 모두 지워집니다)')) {
+      ['pb_cms','pb_cms_img',PB.K.hero,PB.K.reviews,PB.K.gallery,PB.K.volunteer].forEach(function(k){ localStorage.removeItem(k); });
+      PB.allMediaKeys().then(function(keys){
+        return Promise.all(keys.map(function(k){ PB.clearURL(k); return PB.delMedia(k); }));
+      }).then(function(){
+        alert('초기화되었습니다.');
+        loadHero(); renderReviews(); renderPhotos();
+      });
+    }
+  });
+  document.getElementById('logoutBtn').addEventListener('click', function(){
+    localStorage.removeItem('pb_admin_until');
+    showPanel();
+  });
+
+  showPanel();
+})();
+</script>
+</body>
+</html>
