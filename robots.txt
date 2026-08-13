@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 
-Sitemap: https://bisoface.com/sitemap.xml
+Sitemap: https://www.bisoface.com/sitemap.xml
