@@ -486,6 +486,24 @@ footer .en { letter-spacing: 3px; font-size: 12px; color: rgba(255,255,255,.4); 
   .logo.logo-bb { font-size: 17.5px; }
   .logo.logo-bb small { font-size: 9.5px; }
 }
+
+/* ── 예약 : 카카오 채널 버튼 ── */
+.book-kakao { display: flex; align-items: center; gap: 14px; border: 1px solid var(--line);
+  padding: 15px 22px; margin-top: 10px; transition: border-color .2s, background .2s; }
+.book-kakao:hover { border-color: var(--gold); background: #FFFDF7; }
+.book-kakao .kk-ico { flex: 0 0 auto; width: 38px; height: 38px; border-radius: 10px;
+  background: #FEE500; color: #3C1E1E; font-family: 'Pretendard', sans-serif;
+  font-size: 10.5px; font-weight: 800; letter-spacing: .3px;
+  display: flex; align-items: center; justify-content: center; }
+.book-kakao .kk-txt { display: flex; flex-direction: column; gap: 2px;
+  font-size: 15px; font-weight: 600; line-height: 1.35; }
+.book-kakao .kk-txt span { font-weight: 400; font-size: 12.5px; color: var(--ink-soft); }
+.book-kakao:hover .kk-txt { color: var(--gold); }
+@media (max-width: 720px) {
+  .book-kakao { padding: 13px 18px; gap: 12px; }
+  .book-kakao .kk-ico { width: 34px; height: 34px; font-size: 9.5px; }
+  .book-kakao .kk-txt { font-size: 14px; }
+}
 </style>
 </head>
 <body>
@@ -531,7 +549,7 @@ footer .en { letter-spacing: 3px; font-size: 12px; color: rgba(255,255,255,.4); 
     <div><strong>빠른 상담 문의</strong><span>고민만 말씀하세요, 나머지는 저희가 안내해드립니다</span></div>
     <div class="consult-acts">
       <a class="c-btn gold" href="tel:010-8718-3912">전화 예약 010-8718-3912</a>
-      <a class="c-btn" href="#contact">메일로 예약 문의</a>
+      <a class="c-btn" href="#contact">카카오톡 예약 문의</a>
     </div>
   </div>
 </div>
@@ -807,7 +825,7 @@ footer .en { letter-spacing: 3px; font-size: 12px; color: rgba(255,255,255,.4); 
       </details>
       <details>
         <summary><span class="q">Q6</span>예약은 어떻게 하나요?</summary>
-        <p class="faq-a">전화(010-8718-3912) 또는 메일로 예약하실 수 있습니다. 이름·연락처·원하시는 시술·희망 날짜를 알려주시면 빠르게 안내드려요. 100% 예약제로 운영되어 다른 분 눈치 보지 않고 편안하게 상담받으실 수 있습니다.</p>
+        <p class="faq-a">전화(010-8718-3912) 또는 카카오톡으로 예약하실 수 있습니다. 이름·연락처·원하시는 시술·희망 날짜를 알려주시면 빠르게 안내드려요. 100% 예약제로 운영되어 다른 분 눈치 보지 않고 편안하게 상담받으실 수 있습니다.</p>
       </details>
     </div>
   </div>
@@ -831,7 +849,7 @@ footer .en { letter-spacing: 3px; font-size: 12px; color: rgba(255,255,255,.4); 
         </span></li>
         <li><span class="k">야간 시술</span><span>상담 후 특정 시술은 야간 예약 가능 (문의 요망)</span></li>
         <li><span class="k">전화</span><span><a href="tel:010-8718-3912" style="color:inherit;">010-8718-3912</a></span></li>
-        <li><span class="k">예약</span><span>100% 예약제 · 전화 또는 메일</span></li>
+        <li><span class="k">예약</span><span>100% 예약제 · 전화 또는 카카오톡</span></li>
       </ul>
       <div class="btn-row">
         <a class="btn btn-dark" href="tel:010-8718-3912">전화로 예약하기</a>
@@ -841,12 +859,12 @@ footer .en { letter-spacing: 3px; font-size: 12px; color: rgba(255,255,255,.4); 
     <div class="reveal">
       <div class="book-box">
         <h3>시술 상담 · 예약</h3>
-        <p class="book-lead">100% 예약제로 운영됩니다. 전화 또는 메일로 편하게 연락 주세요.</p>
+        <p class="book-lead">100% 예약제로 운영됩니다. 전화 또는 카카오톡으로 편하게 연락 주세요.</p>
         <a class="book-tel" href="tel:010-8718-3912">
           <span>전화로 예약하기</span>
           <strong>010-8718-3912</strong>
         </a>
-        <a class="book-mail" href="mailto:biso4041@gmail.com?subject=%5B%EC%98%88%EC%95%BD%20%EB%AC%B8%EC%9D%98%5D%20%EC%97%B0%EC%84%B8%EC%A0%9C%EC%9D%B4%EC%9B%90%EC%9D%98%EC%9B%90&amp;body=%EC%9D%B4%EB%A6%84%3A%20%0A%EC%97%B0%EB%9D%BD%EC%B2%98%3A%20%0A%EC%9B%90%ED%95%98%EC%8B%9C%EB%8A%94%20%EC%8B%9C%EC%88%A0%3A%20%0A%ED%9D%AC%EB%A7%9D%20%EB%82%A0%EC%A7%9C%C2%B7%EC%8B%9C%EA%B0%84%3A%20%0A%EA%B6%81%EA%B8%88%ED%95%9C%20%EC%A0%90%3A%20%0A">✉️ 메일로 예약 문의하기 <span>biso4041@gmail.com</span></a>
+        <a class="book-kakao" href="https://pf.kakao.com/_QyFiX/chat" target="_blank" rel="noopener"><span class="kk-ico" aria-hidden="true">TALK</span><span class="kk-txt">카카오톡으로 문의하기<span>FACE_BB 채널</span></span></a>
         <div class="book-guide">
           <p class="book-guide-t">예약 시 알려주시면 빠릅니다</p>
           <ul>
