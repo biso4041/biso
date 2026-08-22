@@ -505,6 +505,7 @@ footer .en { letter-spacing: 3px; font-size: 12px; color: rgba(255,255,255,.4); 
   .book-kakao .kk-txt { font-size: 14px; }
 }
 </style>
+<script src="content.js"></script><!-- 「웹에 반영하기」로 올린 내용. 그림이 그려지기 전에 읽혀야 깜빡이지 않는다. -->
 </head>
 <body>
 
@@ -1032,10 +1033,25 @@ function cmsNodes(){ return [...document.querySelectorAll(CMS_SEL)].filter(el =>
 // 저장된 수정 내용 반영
 (function applyCms(){
   try {
-    const map = JSON.parse(localStorage.getItem('pb_cms') || '{}');
+    // 반영된 것을 바탕에 깔고, 이 브라우저에서 고치는 중인 것을 위에 얹는다
+    const pub = (window.PB_PUBLISHED || {}).data || {};
+    const pubMedia = (window.PB_PUBLISHED || {}).media || {};
+    const merge = (key, fallback) => {
+      let base = pub[key];
+      if (typeof base === 'string') { try { base = JSON.parse(base); } catch(e) { base = {}; } }
+      base = base || {};
+      let own = {};
+      try { own = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
+      return Object.assign({}, base, own);
+    };
+    const map = merge('pb_cms');
     cmsNodes().forEach((el, i) => { if (map[i] != null) el.innerHTML = map[i]; });
-    const imgs = JSON.parse(localStorage.getItem('pb_cms_img') || '{}');
-    [...document.images].forEach((img, i) => { if (imgs[i]) img.src = imgs[i]; });
+    const imgs = merge('pb_cms_img');
+    [...document.images].forEach((img, i) => {
+      let v = imgs[i];
+      if (!v && pubMedia['cmsimg_' + i]) v = pubMedia['cmsimg_' + i];
+      if (v) img.src = v;
+    });
   } catch(e){}
 })();
 

@@ -73,6 +73,7 @@
   .tab.active{border-color:var(--ink);color:var(--ink);}
   .hint{font-size:12.5px;color:var(--ink-soft);margin-top:8px;}
 </style>
+<script src="content.js"></script><!-- 이미 웹에 반영돼 있는 내용 -->
 </head>
 <body>
 <header>
@@ -97,6 +98,44 @@
 
   <!-- 관리 패널 -->
   <div id="panel">
+
+    <!-- 웹에 반영하기 -->
+    <div class="card" id="pubCard">
+      <h2>&#127760; 웹에 반영하기</h2>
+      <p class="desc">여기까지 고치신 내용을 <b>손님 화면에도 보이게</b> 합니다.
+        글·사진·후기·이벤트가 함께 올라가고, <b>1~2분</b>이면 홈페이지가 새로 올라갑니다.
+        누르기 전까지는 <b>실장님 화면에만</b> 보입니다.</p>
+
+      <div class="notice" id="pubState" style="margin-bottom:16px;"></div>
+
+      <div class="box" id="adRules" style="margin-bottom:16px;">
+        <b>&#9888;&#65039; 올리기 전에 — 의료광고로 쓸 수 없는 표현</b>
+        <p class="desc" style="margin:8px 0 0;">의원 관련 페이지는 <b>의료법 광고 규제</b>를 받습니다.
+          아래에 해당하면 고쳐서 올려 주세요.</p>
+        <ul class="desc" style="margin:10px 0 0; padding-left:18px; line-height:1.9;">
+          <li><b>최고 · 유일 · 제일 · 1위 · 최초</b> — 견줄 수 없다는 표현은 쓸 수 없습니다</li>
+          <li><b>100% · 완치 · 부작용 없는 · 안전한</b> — 효과를 보장하는 표현</li>
+          <li><b>시술 전후 사진</b> — 치료 효과를 보여주는 사진</li>
+          <li><b>치료 경험담 후기</b> — 시술받고 좋아졌다는 손님 이야기</li>
+          <li><b>다른 곳보다 싸다 · 이벤트가 · 할인</b> — 가격을 앞세운 유인</li>
+          <li>비교·비방, 인증받지 않은 자격·수상 표기</li>
+        </ul>
+        <p class="desc" style="margin:10px 0 0;">
+          퍼스널컬러·체형진단·반영구처럼 <b>의료행위가 아닌 것</b>은 위 제한을 받지 않습니다.
+          헷갈리시면 올리기 전에 한 번 물어봐 주세요.</p>
+        <label style="display:flex;align-items:center;gap:9px;margin-top:14px;font-weight:600;cursor:pointer;">
+          <input type="checkbox" id="adOk" style="width:18px;height:18px;">
+          확인했습니다 — 위 표현이 들어가지 않았습니다
+        </label>
+      </div>
+
+      <div class="row">
+        <button class="btn btn-gold" id="pubGo" disabled>웹에 반영하기</button>
+        <button class="btn btn-ghost" id="pubCheck">홈페이지 열어 확인</button>
+      </div>
+      <p class="desc" style="margin-top:14px;">되돌리고 싶으실 때를 대비해,
+        아래 <b>백업 내보내기</b>를 먼저 받아 두시면 언제든 그 시점으로 돌아갈 수 있습니다.</p>
+    </div>
 
     <!-- 예약 안내 -->
     <div class="card">
@@ -655,6 +694,95 @@
   });
 
   showPanel();
+})();
+
+/* ── 웹에 반영하기 ────────────────────────────────
+   고친 내용을 버셀의 저장 기능(api/publish)으로 보낸다.
+   PB.exportAll() 이 이미 「설정 + 사진·영상」을 한 덩어리로 만들어 주므로 그대로 쓴다.
+   깃허브 열쇠는 그쪽 서버에만 있어 이 화면에는 비밀번호 말고 아무 비밀이 없다. */
+(function(){
+  var PUB = window.PB_PUBLISHED || { data:{}, media:{} };
+  var LIMIT = 3 * 1024 * 1024;
+
+  function draw(all){
+    var box = document.getElementById('pubState');
+    if (!box) return;
+    var n = 0;
+    Object.keys(all.settings).forEach(function(k){
+      if (String((PUB.data||{})[k]) !== String(all.settings[k])) n++;
+    });
+    var img = Object.keys(all.media).filter(function(k){ return !(PUB.media||{})[k]; }).length;
+    box.innerHTML = (n + img)
+      ? '<b>아직 반영하지 않은 것이 있습니다.</b>' + (img ? ' (사진·영상 ' + img + '개 포함)' : '') +
+        '<br>위 항목을 확인하시고 아래 단추를 눌러 주세요.'
+      : '고치신 내용이 <b>모두 반영돼 있습니다.</b>';
+  }
+  PB.exportAll().then(draw);
+
+  var ok = document.getElementById('adOk');
+  var go = document.getElementById('pubGo');
+  if (ok && go) ok.addEventListener('change', function(){ go.disabled = !ok.checked; });
+
+  function send(payload){
+    return fetch('/api/publish', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    }).then(function(r){
+      return r.json().catch(function(){
+        return { ok:false, error:'서버가 응답하지 않았습니다 (' + r.status + ').' };
+      });
+    });
+  }
+
+  if (go) go.addEventListener('click', function(){
+    var pin = prompt('확인을 위해 비밀번호를 한 번 더 넣어 주세요.');
+    if (pin === null) return;
+    go.disabled = true; go.textContent = '준비하는 중…';
+
+    PB.exportAll().then(function(all){
+      var batches = [], cur = {}, size = 0;
+      Object.keys(all.media).forEach(function(k){
+        if ((PUB.media||{})[k]) return;                  // 이미 올라간 것은 다시 안 보낸다
+        var v = String(all.media[k] || '');
+        if (size && size + v.length > LIMIT){ batches.push(cur); cur = {}; size = 0; }
+        cur[k] = v; size += v.length;
+      });
+      if (size) batches.push(cur);
+
+      var steps = [{ pin:pin, data:all.settings, media: batches.shift() || {} }]
+        .concat(batches.map(function(b){ return { pin:pin, media:b }; }));
+      var total = steps.length, done = 0;
+
+      (function next(){
+        if (!steps.length){
+          go.disabled = false; go.textContent = '웹에 반영하기';
+          if (ok) { ok.checked = false; go.disabled = true; }
+          alert('반영했습니다.\n1~2분 뒤 홈페이지에서 확인해 보세요.\n(바로 안 바뀌면 새로고침을 한 번 해 주세요)');
+          PUB.data = all.settings; PB.exportAll().then(draw);
+          return;
+        }
+        send(steps.shift()).then(function(r){
+          if (!r.ok){
+            go.disabled = false; go.textContent = '웹에 반영하기';
+            alert('반영하지 못했습니다.\n\n' + (r.error || '알 수 없는 문제') +
+                  '\n\n설정이 아직 안 되어 있다면 만드신 분께 알려 주세요.');
+            return;
+          }
+          done++;
+          go.textContent = '반영하는 중… (' + done + '/' + total + ')';
+          next();
+        }).catch(function(e){
+          go.disabled = false; go.textContent = '웹에 반영하기';
+          alert('반영하지 못했습니다.\n\n' + e.message);
+        });
+      })();
+    });
+  });
+
+  var chk = document.getElementById('pubCheck');
+  if (chk) chk.addEventListener('click', function(){
+    window.open('index.html?t=' + Date.now(), '_blank');
+  });
 })();
 </script>
 </body>

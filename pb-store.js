@@ -74,9 +74,24 @@
 
     uid: function () { return 'm' + Date.now().toString(36) + Math.floor(Math.random() * 1e6).toString(36); },
 
+    /* 내용은 두 군데에 있다.
+         ① content.js  — 「웹에 반영하기」로 올린 것. 손님에게 보이는 진짜 내용.
+         ② 이 브라우저  — 실장님이 고치는 중인 것. 아직 아무에게도 안 보인다.
+       고치는 중인 게 있으면 그것을, 없으면 반영된 것을 쓴다. */
+    published: function (k) {
+      var p = window.PB_PUBLISHED || {};
+      var v = (p.data || {})[k];
+      if (v === undefined) return undefined;
+      if (typeof v !== 'string') return v;
+      try { return JSON.parse(v); } catch (e) { return v; }   // 백업 모양은 문자열로 담겨 있다
+    },
     read: function (k, fb) {
-      try { var v = JSON.parse(localStorage.getItem(k)); return v === null ? fb : v; }
-      catch (e) { return fb; }
+      try {
+        var raw = localStorage.getItem(k);
+        if (raw !== null) return JSON.parse(raw);
+      } catch (e) {}
+      var pub = PB.published(k);
+      return pub === undefined ? fb : pub;
     },
     write: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { alert('저장 공간이 부족합니다. 사진을 줄여주세요.'); } },
 
@@ -101,11 +116,13 @@
     mediaURL: function (id) {
       if (!id) return Promise.resolve('');
       if (urlCache[id]) return Promise.resolve(urlCache[id]);
+      // 반영된 사진·영상은 서버에 파일로 올라가 있다. 이 컴퓨터에 없으면 그 주소를 쓴다.
+      var pubPath = ((window.PB_PUBLISHED || {}).media || {})[id];
       return tx('readonly', function (s) { return s.get(id); }).then(function (blob) {
-        if (!blob) return '';
+        if (!blob) return pubPath || '';
         urlCache[id] = URL.createObjectURL(blob);
         return urlCache[id];
-      }).catch(function () { return ''; });
+      }).catch(function () { return pubPath || ''; });
     },
 
     clearURL: function (id) {
